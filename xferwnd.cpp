@@ -1337,7 +1337,7 @@ int xfer_IDC_MAXSIMULDL(HWND hwndDlg) {
 
 #ifdef _DEFINE_WXUI
 	long val;
-	if (g_xfers_wnd->m_maxsimuldl->GetValue().ToLong(&val) && val != 0) {
+	if ((g_xfers_wnd!=NULL) && g_xfers_wnd->m_maxsimuldl->GetValue().ToLong(&val) && val != 0) {
 		g_max_simul_dl=(int) val;
 		g_config->WriteInt(CONFIG_recv_maxdl,(int) val);
 	}

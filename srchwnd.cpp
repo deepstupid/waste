@@ -1703,7 +1703,7 @@ int srchwnd_WM_DESTROY()
 	return 0;
 }
 
-int set_srch_title (char *buf, int len) 
+int set_srch_title (char *buf, int len)
 {
 	strcpy(buf,"Browser");
 	int numresults=m_srch_sort_len;
@@ -1742,7 +1742,8 @@ void srchwnd_ID_SENDFILENODE() {
 			_T(""),
 			_T(""),
 			_T("All files|*.*"),
-			wxMULTIPLE|wxOPEN);
+			wxFD_MULTIPLE|wxFD_OPEN);
+
 
 	if (dlg.ShowModal() == wxID_OK) {
 		wxArrayString strs;

@@ -142,7 +142,7 @@ bool WxPrefs::Create( wxWindow* parent, wxWindowID id, const wxString& caption, 
 */
 
 void WxPrefs::CreateControls()
-{    
+{
 ////@begin WxPrefs content construction
 
 	wxXmlResource::Get()->LoadDialog(this, GetParent(), _T("ID_PREFS_DIALOG"));
@@ -419,7 +419,7 @@ void WxPrefs::OnAddPubKeysClick( wxCommandEvent& event )
 	wxFileDialog dialog(this, _T("Import public key file:"),
 			_T(""), _T(""),
 			_T("Public key files (*.pub, *.txt)|*.pub;*.txt|All files (*.*)|*.*"),
-			wxOPEN|wxMULTIPLE);
+			wxFD_OPEN|wxFD_MULTIPLE);
 
 	if (dialog.ShowModal() == wxID_OK)
 	{

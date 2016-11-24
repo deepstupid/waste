@@ -750,8 +750,10 @@ int netkern_WM_COMMAND_IDC_NUMCONUP() {
 						int r;
 
 #ifdef _DEFINE_WXUI
-	long lr;
-	bool b = g_netstat_dlg->m_num_con_up->GetValue().ToLong(&lr);
+	long lr = 0;
+	auto e = g_netstat_dlg;
+	auto d = (e != NULL) ? g_netstat_dlg->m_num_con_up : NULL;
+	bool b = (d!=NULL) ? d->GetValue().ToLong(&lr) : false;
 	r = (int) lr;
 #else
 						BOOL b;
