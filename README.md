@@ -1,13 +1,16 @@
 # WASTE
 
-### Encrypted, decentralized, peer-to-peer communication tool, for secure:
-- exchange of files
-- group chat channels
+## WASTE is a tool for secure
+distributed collaboration and
+communications for trusted groups of
+individuals. WASTE allows easy and
+effortless communication and data
+transfer. WASTE requires minimal
+administration and involves no
+central server.
 
-Cross-platform verison of WASTE using wxWidgets toolkit. 
 
-
-## Index:
+----
 
 
 Highlighted Features
