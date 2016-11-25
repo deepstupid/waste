@@ -13,12 +13,12 @@ Inc., created 1991. All rights reserved.
 #include "nn.hpp"
 #include "prime.hpp"
 
-static unsigned int SMALL_PRIMES[] = { 3, 5, 7, 11 };
+static uint16_t SMALL_PRIMES[] = { 3, 5, 7, 11 };
 #define SMALL_PRIME_COUNT 4
 
-static int ProbablePrime(NN_DIGIT *, unsigned int);
-static int SmallFactor(NN_DIGIT *, unsigned int);
-static int FermatTest(NN_DIGIT *, unsigned int);
+static int ProbablePrime(NN_DIGIT *, uint16_t);
+static int SmallFactor(NN_DIGIT *, uint16_t);
+static int FermatTest(NN_DIGIT *, uint16_t);
 
 /* Generates a probable prime a between b and c such that a-1 is divisible by d.
 
@@ -28,7 +28,7 @@ Assumes b < c, digits < MAX_NN_DIGITS.
 Returns RE_NEED_RANDOM if randomStruct not seeded, RE_DATA if
 unsuccessful.
 */
-int GeneratePrime(NN_DIGIT *a, NN_DIGIT *b, NN_DIGIT *c, NN_DIGIT *d, unsigned int digits, R_RANDOM_STRUCT *randomStruct)
+int GeneratePrime(NN_DIGIT *a, NN_DIGIT *b, NN_DIGIT *c, NN_DIGIT *d, uint16_t digits, R_RANDOM_STRUCT *randomStruct)
 {
 	int status;
 	unsigned char block[MAX_NN_DIGITS * NN_DIGIT_LEN];
@@ -70,7 +70,7 @@ int GeneratePrime(NN_DIGIT *a, NN_DIGIT *b, NN_DIGIT *c, NN_DIGIT *d, unsigned i
 Lengths: a[aDigits].
 Assumes aDigits < MAX_NN_DIGITS.
 */
-static int ProbablePrime(NN_DIGIT *a, unsigned int aDigits)
+static int ProbablePrime(NN_DIGIT *a, uint16_t aDigits)
 {
 	return (! SmallFactor(a, aDigits) && FermatTest(a, aDigits));
 }
@@ -80,11 +80,11 @@ static int ProbablePrime(NN_DIGIT *a, unsigned int aDigits)
 Lengths: a[aDigits].
 Assumes aDigits < MAX_NN_DIGITS.
 */
-static int SmallFactor(NN_DIGIT *a, unsigned int aDigits)
+static int SmallFactor(NN_DIGIT *a, uint16_t aDigits)
 {
 	int status;
 	NN_DIGIT t[1];
-	unsigned int i;
+	uint16_t i;
 
 	status = 0;
 
@@ -111,7 +111,7 @@ static int SmallFactor(NN_DIGIT *a, unsigned int aDigits)
 Lengths: a[aDigits].
 Assumes aDigits < MAX_NN_DIGITS.
 */
-static int FermatTest(NN_DIGIT *a, unsigned int aDigits)
+static int FermatTest(NN_DIGIT *a, uint16_t aDigits)
 {
 	int status;
 	NN_DIGIT t[MAX_NN_DIGITS], u[MAX_NN_DIGITS];

@@ -102,11 +102,11 @@ public:
 	char *get_searchstring() { return m_searchstring; }
 	int get_min_conspeed() { return m_min_conspeed; }
 
-	void set_min_conspeed(unsigned int speed) { m_min_conspeed=speed; }
+	void set_min_conspeed(uint16_t speed) { m_min_conspeed=speed; }
 	void set_searchstring(char *str);
 
 protected:
-	unsigned int m_min_conspeed;
+	uint16_t m_min_conspeed;
 	char m_searchstring[256];
 
 };

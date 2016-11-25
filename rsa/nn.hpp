@@ -7,8 +7,8 @@ Inc., created 1991. All rights reserved.
 
 /* Type definitions.
 */
-typedef UINT4 NN_DIGIT;
-typedef UINT2 NN_HALF_DIGIT;
+typedef uint32_t NN_DIGIT;
+typedef uint16_t NN_HALF_DIGIT;
 
 /* Constants.
 
@@ -34,8 +34,8 @@ in NN_Mult (t), NN_ModMult (t), NN_ModInv (w), and NN_Div (c).
 #define LOW_HALF(x) ((x) & MAX_NN_HALF_DIGIT)
 #define HIGH_HALF(x) (((x) >> NN_HALF_DIGIT_BITS) & MAX_NN_HALF_DIGIT)
 #define TO_HIGH_HALF(x) (((NN_DIGIT)(x)) << NN_HALF_DIGIT_BITS)
-#define DIGIT_MSB(x) (unsigned int)(((x) >> (NN_DIGIT_BITS - 1)) & 1)
-#define DIGIT_2MSB(x) (unsigned int)(((x) >> (NN_DIGIT_BITS - 2)) & 3)
+#define DIGIT_MSB(x) (uint16_t)(((x) >> (NN_DIGIT_BITS - 1)) & 1)
+#define DIGIT_2MSB(x) (uint16_t)(((x) >> (NN_DIGIT_BITS - 2)) & 3)
 
 /* CONVERSIONS
 NN_Decode (a, digits, b, len)   Decodes character string b into a.
@@ -70,30 +70,30 @@ NN_Zero (a, digits)             Returns 1 iff a = 0.
 NN_Digits (a, digits)           Returns significant length of a in digits.
 NN_Bits (a, digits)             Returns significant length of a in bits.
 */
-void NN_Decode(NN_DIGIT *, unsigned int, unsigned char *, unsigned int);
-void NN_Encode(unsigned char *, unsigned int, NN_DIGIT *, unsigned int);
+void NN_Decode(NN_DIGIT *, uint16_t, unsigned char *, uint16_t);
+void NN_Encode(unsigned char *, uint16_t, NN_DIGIT *, uint16_t);
 
-void NN_Assign(NN_DIGIT *, NN_DIGIT *, unsigned int);
-void NN_AssignZero(NN_DIGIT *, unsigned int);
-void NN_Assign2Exp(NN_DIGIT *, unsigned int, unsigned int);
+void NN_Assign(NN_DIGIT *, NN_DIGIT *, uint16_t);
+void NN_AssignZero(NN_DIGIT *, uint16_t);
+void NN_Assign2Exp(NN_DIGIT *, uint16_t, uint16_t);
 
-NN_DIGIT NN_Add(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, unsigned int);
-NN_DIGIT NN_Sub(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, unsigned int);
-void NN_Mult(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, unsigned int);
-void NN_Div(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, unsigned int, NN_DIGIT *, unsigned int);
-NN_DIGIT NN_LShift(NN_DIGIT *, NN_DIGIT *, unsigned int, unsigned int);
-NN_DIGIT NN_RShift(NN_DIGIT *, NN_DIGIT *, unsigned int, unsigned int);
+NN_DIGIT NN_Add(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, uint16_t);
+NN_DIGIT NN_Sub(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, uint16_t);
+void NN_Mult(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, uint16_t);
+void NN_Div(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, uint16_t, NN_DIGIT *, uint16_t);
+NN_DIGIT NN_LShift(NN_DIGIT *, NN_DIGIT *, uint16_t, uint16_t);
+NN_DIGIT NN_RShift(NN_DIGIT *, NN_DIGIT *, uint16_t, uint16_t);
 
-void NN_Mod(NN_DIGIT *, NN_DIGIT *, unsigned int, NN_DIGIT *, unsigned int);
-void NN_ModMult(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, unsigned int);
-void NN_ModExp(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, unsigned int, NN_DIGIT *, unsigned int, R_RANDOM_STRUCT *rand=NULL);
-void NN_ModInv(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, unsigned int);
-void NN_Gcd(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, unsigned int);
+void NN_Mod(NN_DIGIT *, NN_DIGIT *, uint16_t, NN_DIGIT *, uint16_t);
+void NN_ModMult(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, uint16_t);
+void NN_ModExp(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, uint16_t, NN_DIGIT *, uint16_t, R_RANDOM_STRUCT *rand=NULL);
+void NN_ModInv(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, uint16_t);
+void NN_Gcd(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, uint16_t);
 
-int NN_Cmp(NN_DIGIT *, NN_DIGIT *, unsigned int);
-int NN_Zero(NN_DIGIT *, unsigned int);
-unsigned int NN_Bits(NN_DIGIT *, unsigned int);
-unsigned int NN_Digits(NN_DIGIT *, unsigned int);
+int NN_Cmp(NN_DIGIT *, NN_DIGIT *, uint16_t);
+int NN_Zero(NN_DIGIT *, uint16_t);
+uint16_t NN_Bits(NN_DIGIT *, uint16_t);
+uint16_t NN_Digits(NN_DIGIT *, uint16_t);
 
 #define NN_ASSIGN_DIGIT(a, b, digits) {NN_AssignZero (a, digits); a[0] = b;}
 #define NN_EQUAL(a, b, digits) (! NN_Cmp (a, b, digits))

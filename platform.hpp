@@ -27,7 +27,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "config.h"
 #define THREAD_SAFE
-#define _REENTRANT
 #include <pthread.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -63,7 +62,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 static inline char *safe_strncpy(char *out, const char *in, int maxl) { strncpy(out,in,maxl); out[maxl-1]=0; return out; }
 
-static inline unsigned int GetTickCount()
+static inline uint16_t GetTickCount()
 {
 	struct timeval tv;
 	gettimeofday(&tv,NULL);

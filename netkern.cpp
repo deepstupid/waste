@@ -123,7 +123,7 @@ static void ListenToSocket()
 	if (g_listen) {
 		C_Connection *c=g_listen->get_connect();
 		if (c) {
-			unsigned int addr=c->get_remote();
+			uint16_t addr=c->get_remote();
 			if (!allowIP(addr)) {
 				struct in_addr in;
 				in.s_addr=addr;
@@ -161,7 +161,7 @@ static void ListenToSocket()
 	}
 }
 
-void NetKern_ConnectToHostIfOK(unsigned long ip, unsigned short port)
+void NetKern_ConnectToHostIfOK(uint32_t ip, unsigned short port)
 {
 	struct in_addr in;
 	in.s_addr=ip;
@@ -238,7 +238,7 @@ static void SendCaps(C_MessageQueue *mq)
 		else if (g_conspeed<20000)a=8192;
 		l.add_cap(MLC_BANDWIDTH,a); //tell it our max bufsize
 		l.add_cap(MLC_SATURATION,!!(g_throttle_flag&16));
-		unsigned long rip=mq->get_con()->get_remote();
+		uint32_t rip=mq->get_con()->get_remote();
 		if (rip) {
 			l.add_cap(MLC_REMOTEIP, (int)rip);
 		};
@@ -269,7 +269,7 @@ void RebroadcastCaps(C_MessageQueueList *mql) //sends a local message to every h
 static void HandleNewOutCons()
 {
 #if defined(_WIN32)&&(!defined(_DEFINE_SRV)) || defined(_DEFINE_WXUI)
-		static unsigned int next_runitem;
+		static uint16_t next_runitem;
 
 	g_keepdeadconns = g_config->ReadInt(CONFIG_keepdeadconns,CONFIG_keepdeadconns_DEFAULT);
 
@@ -327,7 +327,7 @@ static void HandleNewOutCons()
 									};
 								};
 							};
-							unsigned long ip;
+							uint32_t ip;
 							if (i == hn && (ip=inet_addr(text)) != INADDR_NONE && is_accessable_addr(ip) && allowIP(ip)) {
 								max_rat=thisrat;
 								max_pos=x;

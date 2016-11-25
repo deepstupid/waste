@@ -107,7 +107,7 @@ const char *C_Config::WriteString(char *name, const char *string)
 	m_dirty=1;
 	for (x = 0; x < m_num_strs; x ++) {
 		if (m_strs[x].value && !strncmp(name,m_strs[x].name,16)) {
-			unsigned int l=(strlen(m_strs[x].value)+16)&~15;
+			uint16_t l=(strlen(m_strs[x].value)+16)&~15;
 			if (strlen(string)<l) {
 				strcpy(m_strs[x].value,string);
 			}

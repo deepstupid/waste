@@ -5621,7 +5621,7 @@ if test $ac_cv_type_size_t = yes; then
 else
 
 cat >>confdefs.h <<_ACEOF
-#define size_t unsigned int
+#define size_t uint16_t
 _ACEOF
 
 fi
@@ -6702,7 +6702,7 @@ if test "${ac_cv_func_select_args+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   for ac_arg234 in 'fd_set *' 'int *' 'void *'; do
- for ac_arg1 in 'int' 'size_t' 'unsigned long int' 'unsigned int'; do
+ for ac_arg1 in 'int' 'size_t' 'uint32_t int' 'uint16_t'; do
   for ac_arg5 in 'struct timeval *' 'const struct timeval *'; do
    cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */

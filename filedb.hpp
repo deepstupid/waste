@@ -53,8 +53,8 @@ public:
 	int readIn(char *fn);
 
 #ifdef _WIN32
-	static unsigned int FileTimeToUnixTime(FILETIME *ft);
-	static void UnixTimeToFileTime(FILETIME *ft, unsigned int t);
+	static uint16_t FileTimeToUnixTime(FILETIME *ft);
+	static void UnixTimeToFileTime(FILETIME *ft, uint16_t t);
 #endif
 
 	//util funcs
@@ -97,12 +97,12 @@ protected:
 	void alloc_dir_index();
 
 	dbType *m_database;
-	int m_database_used,m_database_size;
-	int m_database_mb;
-	int m_database_xbytes; //bytes unaccounted for in _mb
-	int m_database_newesttime;
+	uint32_t m_database_used,m_database_size;
+	uint32_t m_database_mb;
+	uint32_t m_database_xbytes; //bytes unaccounted for in _mb
+	uint32_t m_database_newesttime;
 
-	int m_oldscan_lastpos,m_oldscan_lastdirpos, m_oldscan_dirstate;
+	uint32_t m_oldscan_lastpos,m_oldscan_lastdirpos, m_oldscan_dirstate;
 
 	int m_scanidx_gpos;
 	int m_use_oldidx;

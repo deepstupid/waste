@@ -52,7 +52,7 @@ C_KeydistRequest::C_KeydistRequest(C_SHBuf *in)
 	m_flags=0;
 
 	unsigned char *data=(unsigned char *)in->Get();
-	unsigned int datalen=in->GetLength();
+	uint16_t datalen=in->GetLength();
 
 	if (datalen < (sizeof(m_nick)-1)+1+2+2+2 ||
 		datalen > (sizeof(m_nick)-1)+1+2+2+2 + MAX_RSA_MODULUS_LEN*2) {
@@ -66,9 +66,9 @@ C_KeydistRequest::C_KeydistRequest(C_SHBuf *in)
 	m_flags=*data++;
 	datalen--;
 
-	m_key.bits=DataUInt2(data);data+=2;datalen-=2;
-	unsigned int modlen=DataUInt2(data);data+=2;datalen-=2;
-	unsigned int explen=DataUInt2(data);data+=2;datalen-=2;
+	m_key.bits=Datauint16_t(data);data+=2;datalen-=2;
+	uint16_t modlen=Datauint16_t(data);data+=2;datalen-=2;
+	uint16_t explen=Datauint16_t(data);data+=2;datalen-=2;
 	if (m_key.bits < MIN_RSA_MODULUS_BITS || m_key.bits > MAX_RSA_MODULUS_BITS ||
 		modlen > MAX_RSA_MODULUS_LEN || explen > MAX_RSA_MODULUS_LEN || datalen < explen+modlen)
 	{

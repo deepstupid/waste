@@ -103,7 +103,7 @@ void C_FileDB::Scan(const char *pathlist)
 	clearDBs();
 
 	safe_strncpy(path_buf,pathlist,sizeof(path_buf));
-	unsigned int len=strlen(path_buf);
+	uint16_t len=strlen(path_buf);
 	if (len==sizeof(path_buf)-1) {
 		char *p=path_buf+len-1;
 		while ((p>path_buf)&&(*p!=';')) p--;
@@ -328,7 +328,7 @@ void C_FileDB::Search(char *ss, C_MessageSearchReply *repl, C_MessageQueueList *
 			if (sslen) for (x = 0; x < m_database_used; x ++) {
 				char buf[2048];
 				char *d=m_dir_index[m_database[x].dir_index].dirname;
-				unsigned int l=m_dir_index[m_database[x].dir_index].base_len+1;
+				uint16_t l=m_dir_index[m_database[x].dir_index].base_len+1;
 
 				int a=l-2;
 				while (a>0 && d[a]!='/' && d[a]!='\\') a--;
@@ -374,12 +374,12 @@ void C_FileDB::Search(char *ss, C_MessageSearchReply *repl, C_MessageQueueList *
 			*p=0;
 			int sslen=p-searchstring;
 
-			unsigned int dbsize_errcnt=0;
+			uint16_t dbsize_errcnt=0;
 
 			for (x = 0; x < m_database_used; x ++) {
 				char buf[2048];
 				char *d=m_dir_index[m_database[x].dir_index].dirname;
-				unsigned int l=m_dir_index[m_database[x].dir_index].base_len+1;
+				uint16_t l=m_dir_index[m_database[x].dir_index].base_len+1;
 
 				int a=l-2;
 				while (a>0 && d[a]!='/' && d[a]!='\\') a--;
@@ -425,7 +425,7 @@ void C_FileDB::Search(char *ss, C_MessageSearchReply *repl, C_MessageQueueList *
 						};
 						int poosize=m_database[x].length_high;
 						if (is_dir) {
-							unsigned int o=dbsize_errcnt;
+							uint16_t o=dbsize_errcnt;
 							dbsize_errcnt += m_database[x].length_low & 0xFFFFF;
 							dbsize_errcnt &= 0xFFFFF;
 							poosize=(m_database[x].length_high * 4096)+(m_database[x].length_low>>20) + (dbsize_errcnt < o);
@@ -436,7 +436,7 @@ void C_FileDB::Search(char *ss, C_MessageSearchReply *repl, C_MessageQueueList *
 						dbsize_errcnt=0;
 					}
 					else {
-						unsigned int o=dbsize_errcnt;
+						uint16_t o=dbsize_errcnt;
 						dbsize_errcnt += m_database[x].length_low & 0xFFFFF;
 						dbsize_errcnt &= 0xFFFFF;
 
@@ -470,13 +470,13 @@ void C_FileDB::Search(char *ss, C_MessageSearchReply *repl, C_MessageQueueList *
 
 	for (x = 0; x < m_database_used; x ++) {
 		char *d=m_dir_index[m_database[x].dir_index].dirname;
-		unsigned int l=m_dir_index[m_database[x].dir_index].base_len+1;
+		uint16_t l=m_dir_index[m_database[x].dir_index].base_len+1;
 		if (l >= strlen(d)) d=(char*)"";
 		else d+=l;
 		if (substr_search(m_database[x].file,d,ssout)) {
 			char buf[2048];
 			char *d=m_dir_index[m_database[x].dir_index].dirname;
-			unsigned int l=m_dir_index[m_database[x].dir_index].base_len+1;
+			uint16_t l=m_dir_index[m_database[x].dir_index].base_len+1;
 
 			int a=l-2;
 			while (a>0 && d[a]!='/' && d[a]!='\\') a--;
@@ -574,7 +574,7 @@ int C_FileDB::GetFile(int index, char *file, char *meta, int *length_low, int *l
 }
 
 #ifdef _WIN32
-	void C_FileDB::UnixTimeToFileTime(FILETIME *ft, unsigned int t)
+	void C_FileDB::UnixTimeToFileTime(FILETIME *ft, uint16_t t)
 	{
 		SYSTEMTIME st={0,};
 		st.wYear=1970;
@@ -584,7 +584,7 @@ int C_FileDB::GetFile(int index, char *file, char *meta, int *length_low, int *l
 		((ULARGE_INTEGER *)ft)->QuadPart += 10000000i64*(__int64)t;
 	}
 
-	unsigned int C_FileDB::FileTimeToUnixTime(FILETIME *ft)
+	uint16_t C_FileDB::FileTimeToUnixTime(FILETIME *ft)
 	{
 		FILETIME lt2;
 		SYSTEMTIME st={0,};
@@ -597,7 +597,7 @@ int C_FileDB::GetFile(int index, char *file, char *meta, int *length_low, int *l
 		memcpy(&end,ft,sizeof(end));
 		end.QuadPart -= ((ULARGE_INTEGER *)&lt2)->QuadPart;
 		end.QuadPart /= 10000000; // 100ns -> seconds
-		return (unsigned int)end.QuadPart;
+		return (uint16_t)end.QuadPart;
 	}
 #endif
 
@@ -609,7 +609,7 @@ int C_FileDB::DoScan(int maxtime, C_FileDB *oldDB)
 	#else
 		struct dirent *d=NULL;
 	#endif
-	unsigned int endt=GetTickCount()+maxtime;
+	uint16_t endt=GetTickCount()+maxtime;
 	if (!m_scan_stack) return -1;
 
 	if (!m_database_used) { //first run
@@ -1126,7 +1126,7 @@ static int GetXingHeader(XHEADDATA *X,  unsigned char *buf)
 			flen = filelen;
 			flen-=id3_skip;
 			while (r-- >= 0) {
-				unsigned int v = DataUIntSwap4(a);
+				uint16_t v = DataUIntSwap4(a);
 				int layer, bitrate, ID, IDex, sfreq,mode;
 				a++;
 				bitrate = (v>>12)&15;
@@ -1176,7 +1176,7 @@ static int GetXingHeader(XHEADDATA *X,  unsigned char *buf)
 
 			FILE *fp=fopen(fn,"wb");
 			if (fp) {
-				unsigned int d=0xDBDBF11B;
+				uint16_t d=0xDBDBF11B;
 				fwrite(&d,1,4,fp);
 				d=4 + 4 + 4 + 4 + 4 + 4 + sizeof(db)*m_database_used + sizeof(di) * m_dir_index_used;
 				fwrite(&d,1,4,fp);
@@ -1245,18 +1245,18 @@ static int GetXingHeader(XHEADDATA *X,  unsigned char *buf)
 				fseek(fp,0,SEEK_END);
 				int flen=ftell(fp);
 				fseek(fp,0,SEEK_SET);
-				unsigned int d;
+				uint32_t d;
 
 				clearDBs();
 
-				if (fread(&d,1,4,fp) == 4 && d == 0xDBDBF11B) {
-					unsigned int len;
-					if (fread(&len,1,4,fp) == 4 && len+8 == (unsigned int)flen) {
-						fread(&m_database_mb,1,4,fp);
-						fread(&m_database_xbytes,1,4,fp);
-						fread(&m_database_newesttime,1,4,fp);
-						fread(&m_dir_index_used,1,4,fp);
-						fread(&m_scanidx_gpos,1,4,fp);
+				if (fread(&d,sizeof(d),1,fp) == 4 && d == 0xDBDBF11B) {
+					uint32_t len;
+					if (fread(&len,sizeof(len),1,fp) == 4 && len+8 == (uint32_t)flen) {
+						fread(&m_database_mb,sizeof(m_database_mb),1,fp);
+						fread(&m_database_xbytes,sizeof(m_database_xbytes),1,fp);
+						fread(&m_database_newesttime,sizeof(m_database_newesttime),1,fp);
+						fread(&m_dir_index_used,sizeof(m_dir_index_used),1,fp);
+						fread(&m_scanidx_gpos,sizeof(m_scanidx_gpos),1,fp);
 
 
 						if (m_dir_index_used) {

@@ -692,8 +692,8 @@ static BOOL CALLBACK ACeditProc(HWND hwndDlg, UINT uMsg, WPARAM wParam,LPARAM /*
 				char *p=strstr(tmp,"/");
 				*p++=0;
 				if (*p <= '9' && *p >= '0') {
-					unsigned int ip=inet_addr(tmp);
-					unsigned int mask=atoi(p);
+					uint16_t ip=inet_addr(tmp);
+					uint16_t mask=atoi(p);
 					if (mask!=0x20) mask&=0x1f; // need /32 too
 					if (inet_addr(tmp) != INADDR_NONE) {
 						ip=ip&IPv4NetMask(mask);

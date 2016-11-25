@@ -35,7 +35,7 @@ public:
 
 	char m_nick[32];
 	unsigned short m_port;
-	unsigned int m_ip;
+	uint16_t m_ip;
 };
 
 #endif//_C_MFILEREQ_H_

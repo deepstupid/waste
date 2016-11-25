@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "prefs.hpp"
 
 //T_GUID g_search_id;
-//unsigned int g_search_id_time;
+//uint16_t g_search_id_time;
 
 int g_exit=0;
 

@@ -56,7 +56,7 @@ C_AsyncDNS::~C_AsyncDNS()
 }
 
 #ifdef _WIN32
-	unsigned long WINAPI C_AsyncDNS::_threadfunc(LPVOID _d)
+	uint32_t WINAPI C_AsyncDNS::_threadfunc(LPVOID _d)
 #else
 	void *C_AsyncDNS::_threadfunc(void *_d)
 #endif
@@ -101,7 +101,7 @@ C_AsyncDNS::~C_AsyncDNS()
 	return 0;
 }
 
-int C_AsyncDNS::resolve(char *hostname, unsigned long *addr)
+int C_AsyncDNS::resolve(char *hostname, uint32_t *addr)
 {
 	//return 0 on success, 1 on wait, -1 on unresolvable
 	int x;

@@ -69,7 +69,7 @@ C_FileSendRequest::C_FileSendRequest(C_SHBuf *in)
 				dbg_printf(ds_Debug,"FileSendRequest parser received malformed m_abort(0x%x)",m_abort);
 				m_abort=2;
 			};
-			m_idx=DataUInt4(data);data+=4;datalen-=4;
+			m_idx=Datauint32_t(data);data+=4;datalen-=4;
 		}
 		else {
 			m_abort=1;
@@ -77,17 +77,17 @@ C_FileSendRequest::C_FileSendRequest(C_SHBuf *in)
 		return;
 	};
 
-	m_idx=DataUInt4(data);data+=4;datalen-=4;
+	m_idx=Datauint32_t(data);data+=4;datalen-=4;
 
 	memcpy(m_fnhash,data,SHA_OUTSIZE);data+=SHA_OUTSIZE;datalen-=SHA_OUTSIZE;
 	memcpy(m_nick,data,sizeof(m_nick)-1);data+=sizeof(m_nick)-1;datalen-=sizeof(m_nick)-1;
-	m_ip=  DataUInt4(data);data+=4;datalen-=4;
-	m_port=DataUInt2(data);data+=2;datalen-=2;
+	m_ip=  Datauint32_t(data);data+=4;datalen-=4;
+	m_port=Datauint16_t(data);data+=2;datalen-=2;
 
 	while (datalen>4 && m_need_chunks_used < FILE_MAX_CHUNKS_PER_REQ) {
-		unsigned int offs=DataUInt4(data);  data+=4;datalen-=4;
-		unsigned int len= DataUInt1(data)+1;data+=1;datalen-=1;
-		unsigned int x;
+		uint16_t offs=Datauint32_t(data);  data+=4;datalen-=4;
+		uint16_t len= DataUInt1(data)+1;data+=1;datalen-=1;
+		uint16_t x;
 
 		for (x = 0; (x < len) && (m_need_chunks_used < FILE_MAX_CHUNKS_PER_REQ); x++) {
 			if (offs==0) bIsInitialRequest=true;
@@ -145,7 +145,7 @@ C_SHBuf *C_FileSendRequest::Make()
 	return p;
 }
 
-void C_FileSendRequest::add_need_chunk(unsigned int idx)
+void C_FileSendRequest::add_need_chunk(uint16_t idx)
 {
 	if (m_need_chunks_used >= FILE_MAX_CHUNKS_PER_REQ) return;
 
@@ -216,13 +216,13 @@ C_FileSendReply::C_FileSendReply(C_SHBuf *in)
 	memset(m_nick,0,sizeof(m_nick));
 
 	unsigned char *data=(unsigned char *)in->Get();
-	unsigned int datalen=in->GetLength();
+	uint16_t datalen=in->GetLength();
 
 	if (datalen < 4) { m_error=datalen; return; }
 
-	m_index=DataUInt4(data);data+=4;datalen-=4;
+	m_index=Datauint32_t(data);data+=4;datalen-=4;
 
-	if (m_index != (unsigned int)~0) { //woohoo we get data now
+	if (m_index != (uint16_t)~0) { //woohoo we get data now
 		m_data_len=datalen;
 		if (m_data_len < 0 || m_data_len > FILE_CHUNKSIZE) {
 			log_printf(ds_Warning,"filesendreply: data length out of range, %d",m_data_len);
@@ -237,14 +237,14 @@ C_FileSendReply::C_FileSendReply(C_SHBuf *in)
 			log_printf(ds_Warning,"filesendreply: got packet that is a header, with length of %d",datalen);
 			return;
 		};
-		m_file_len_low =DataUInt4(data);data+=4;datalen-=4;
-		m_file_len_high=DataUInt4(data);data+=4;datalen-=4;
-		m_create_date  =DataUInt4(data);data+=4;datalen-=4;
-		m_mod_date     =DataUInt4(data);data+=4;datalen-=4;
-		m_chunkcnt     =DataUInt4(data);data+=4;datalen-=4;
+		m_file_len_low =Datauint32_t(data);data+=4;datalen-=4;
+		m_file_len_high=Datauint32_t(data);data+=4;datalen-=4;
+		m_create_date  =Datauint32_t(data);data+=4;datalen-=4;
+		m_mod_date     =Datauint32_t(data);data+=4;datalen-=4;
+		m_chunkcnt     =Datauint32_t(data);data+=4;datalen-=4;
 		memcpy(m_hash,data,SHA_OUTSIZE);data+=SHA_OUTSIZE;datalen-=SHA_OUTSIZE;
-		m_ip           =DataUInt4(data);data+=4;datalen-=4;
-		m_port         =DataUInt2(data);data+=2;datalen-=2;
+		m_ip           =Datauint32_t(data);data+=4;datalen-=4;
+		m_port         =Datauint16_t(data);data+=2;datalen-=2;
 		if (datalen>=(sizeof(m_nick)-1)) { //let's get nick & maintain compat
 			memcpy(m_nick,data,sizeof(m_nick)-1);
 			m_nick[sizeof(m_nick)-1]=0;
@@ -272,7 +272,7 @@ C_SHBuf *C_FileSendReply::Make()
 
 	if (m_error) return new C_SHBuf(m_error>3?3:m_error);
 
-	if (m_index!=(unsigned int)~0) {
+	if (m_index!=(uint16_t)~0) {
 		if (m_data_len > FILE_CHUNKSIZE) {
 			log_printf(ds_Warning,"filesendreply::make() data length = %d",m_data_len);
 			return new C_SHBuf(0);
@@ -300,7 +300,7 @@ C_SHBuf *C_FileSendReply::Make()
 	return p;
 }
 
-void C_FileSendReply::set_file_len(unsigned int file_len_low, unsigned int file_len_high)
+void C_FileSendReply::set_file_len(uint16_t file_len_low, uint16_t file_len_high)
 {
 	m_file_len_low=file_len_low;
 	m_file_len_high=file_len_high;

@@ -28,14 +28,14 @@ documentation and/or software.
 
 /* MD5 context. */
 struct _MD5_CTX{
-	UINT4 state[4];                                   /* state (ABCD) */
-	UINT4 count[2];        /* number of bits, modulo 2^64 (lsb first) */
+	uint32_t state[4];                                   /* state (ABCD) */
+	uint32_t count[2];        /* number of bits, modulo 2^64 (lsb first) */
 	unsigned char buffer[64];                         /* input buffer */
 };
 typedef struct _MD5_CTX MD5_CTX;
 
 void MD5Init(MD5_CTX *);
-void MD5Update(MD5_CTX *, unsigned char *, unsigned int);
+void MD5Update(MD5_CTX *, unsigned char *, uint16_t);
 void MD5Final(unsigned char [16], MD5_CTX *);
 
 #endif

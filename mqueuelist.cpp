@@ -253,7 +253,7 @@ void C_MessageQueueList::run(int doRouting)
 	m_run_rr++;
 }
 
-int C_MessageQueueList::find_route(T_GUID *id, unsigned int msgtype)
+int C_MessageQueueList::find_route(T_GUID *id, uint16_t msgtype)
 {
 	int r;
 	if (m_local_route->is_route(id,msgtype)) return -1;

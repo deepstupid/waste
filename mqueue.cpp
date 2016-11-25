@@ -164,9 +164,9 @@ void C_MessageQueue::run(int isrecv, int maxbytesend)
 				unsigned char t[8];
 				m_con->recv_bytes(&m_newmsg.message_md5,16);
 				m_con->recv_bytes(t,8);
-				m_newmsg.message_type=DataUInt4(t);
+				m_newmsg.message_type=Datauint32_t(t);
 				m_newmsg.message_prio=DataUInt1(t+4);
-				m_newmsg.message_length=(int)DataUInt2(t+5);
+				m_newmsg.message_length=(int)Datauint16_t(t+5);
 				m_newmsg.message_ttl=DataUInt1(t+7);
 				m_con->recv_bytes(&m_newmsg.message_guid,16);
 
@@ -269,7 +269,7 @@ void C_MessageQueue::run(int isrecv, int maxbytesend)
 
 #define __idcmp(x,y) memcmp((x),(y),16)
 
-void C_MessageQueue::add_route(T_GUID *id, unsigned int msgtype)
+void C_MessageQueue::add_route(T_GUID *id, uint16_t msgtype)
 {
 	int r;
 	int whichtab=msg2tab(msgtype);
@@ -332,7 +332,7 @@ int C_MessageQueue::find_route(T_GUID *id, int whichtab)
 	};
 }
 
-int C_MessageQueue::is_route(T_GUID *id, unsigned int msgtype)
+int C_MessageQueue::is_route(T_GUID *id, uint16_t msgtype)
 {
 	int whichtab=msg2tab(msgtype);
 	int r=find_route(id,whichtab);
@@ -376,7 +376,7 @@ void C_MessageQueue::removefirst()
 	};
 }
 
-int C_MessageQueue::msg2tab(unsigned int msg)
+int C_MessageQueue::msg2tab(uint16_t msg)
 {
 	if (msg == MESSAGE_PING) return ROUTETAB_PING;
 	if (msg == MESSAGE_FILE_REQUEST || msg == MESSAGE_FILE_REQUEST_REPLY) return ROUTETAB_FILE;

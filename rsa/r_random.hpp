@@ -5,4 +5,4 @@
 Inc., created 1991. All rights reserved.
 */
 
-int R_GenerateBytes(unsigned char *, unsigned int, R_RANDOM_STRUCT *);
+int R_GenerateBytes(unsigned char *, uint16_t, R_RANDOM_STRUCT *);

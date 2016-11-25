@@ -30,13 +30,13 @@ int R_RandomInit(R_RANDOM_STRUCT *randomStruct)
 Params:
 	R_RANDOM_STRUCT *randomStruct;	random structure
 	unsigned char *block;			block of values to mix in
-	unsigned int blockLen;			length of block
+	uint16_t blockLen;			length of block
 */
-int R_RandomUpdate(R_RANDOM_STRUCT *randomStruct, unsigned char *block, unsigned int blockLen)
+int R_RandomUpdate(R_RANDOM_STRUCT *randomStruct, unsigned char *block, uint16_t blockLen)
 {
 	MD5_CTX context;
 	unsigned char digest[16];
-	unsigned int i, x;
+	uint16_t i, x;
 
 	MD5Init(&context);
 	MD5Update(&context, block, blockLen);
@@ -62,10 +62,10 @@ int R_RandomUpdate(R_RANDOM_STRUCT *randomStruct, unsigned char *block, unsigned
 
 /*
 Params:
-	unsigned int *bytesNeeded;		number of mix-in bytes needed
+	uint16_t *bytesNeeded;		number of mix-in bytes needed
 	R_RANDOM_STRUCT *randomStruct;	random structure
 */
-int R_GetRandomBytesNeeded(unsigned int *bytesNeeded, R_RANDOM_STRUCT *randomStruct)
+int R_GetRandomBytesNeeded(uint16_t *bytesNeeded, R_RANDOM_STRUCT *randomStruct)
 {
 	*bytesNeeded = randomStruct->bytesNeeded;
 	return (0);
@@ -74,13 +74,13 @@ int R_GetRandomBytesNeeded(unsigned int *bytesNeeded, R_RANDOM_STRUCT *randomStr
 /*
 Params:
 	unsigned char *block;			block
-	unsigned int blockLen;			length of block
+	uint16_t blockLen;			length of block
 	R_RANDOM_STRUCT *randomStruct;	random structure
 */
-int R_GenerateBytes(unsigned char *block, unsigned int blockLen, R_RANDOM_STRUCT *randomStruct)
+int R_GenerateBytes(unsigned char *block, uint16_t blockLen, R_RANDOM_STRUCT *randomStruct)
 {
 	MD5_CTX context;
-	unsigned int available, i;
+	uint16_t available, i;
 
 	if (randomStruct->bytesNeeded)
 		return (RE_NEED_RANDOM);

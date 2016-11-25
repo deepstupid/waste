@@ -61,15 +61,15 @@ class _bfInit
 			stage4_complete
 		};
 		_bfInit() {i=0;};
-		bool TestAll1(unsigned int mask);
-		bool TestAll0(unsigned int mask);
+		bool TestAll1(uint16_t mask);
+		bool TestAll0(uint16_t mask);
 		bool Get(_flags f);
 		void Set(_flags f,bool value);
-		unsigned int GetI();
-		void SetI(unsigned int i);
+		uint16_t GetI();
+		void SetI(uint16_t i);
 		_stage GetStage();
 	private:
-		unsigned int i;
+		uint16_t i;
 };
 
 class C_Connection
@@ -103,8 +103,8 @@ public:
 	int recv_bytes_available();
 	int recv_bytes(void *data, int maxlength); //multiples of 8
 
-	unsigned long get_interface();
-	unsigned long get_remote() { return m_saddr.sin_addr.s_addr; };
+	uint32_t get_interface();
+	uint32_t get_remote() { return m_saddr.sin_addr.s_addr; };
 	unsigned short get_remote_port() { return m_remote_port; };
 
 	int get_total_bytes_recv() { return m_recv_bytes_total; };
@@ -155,13 +155,13 @@ protected:
 
 	struct
 	{
-		unsigned int time_ms;
-		unsigned int send_bytes;
-		unsigned int recv_bytes;
+		uint16_t time_ms;
+		uint16_t send_bytes;
+		uint16_t recv_bytes;
 	} bps_count[30];
 
 	int bps_count_pos;
-	unsigned int m_start_time;
+	uint16_t m_start_time;
 
 	void encrypt_buffer(void *data, int len);
 	void decrypt_buffer(void *data, int len);

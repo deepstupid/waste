@@ -89,7 +89,7 @@ SearchCacheItem::SearchCacheItem()
 	search_id_time=0;
 	memset(&search_id,0,sizeof(search_id));
 	numcons=0;
-	lastvisitem=(unsigned int)-1;
+	lastvisitem=(uint16_t)-1;
 }
 
 SearchCacheItem::~SearchCacheItem()
@@ -109,7 +109,7 @@ C_ItemList<char> g_searchhistory;
 int g_searchhistory_position;
 
 //ADDED Md5Chap moved to util!
-//void FormatSizeStr64(char *out, unsigned int low, unsigned int high)
+//void FormatSizeStr64(char *out, uint16_t low, uint16_t high)
 
 #define COL_ITEM 0
 #define COL_SIZE 1
@@ -119,7 +119,7 @@ int g_searchhistory_position;
 #define COL_LOC 5
 
 #if defined(_WIN32)&&(!defined(_DEFINE_SRV)) || defined(_DEFINE_WXUI)
-	static unsigned int *m_srch_sort;
+	static uint16_t *m_srch_sort;
 	static int m_srch_sort_len,m_srch_sort_alloc;
 	static int m_fullsize;
 
@@ -143,8 +143,8 @@ SendMessageSearch (HWND wnd)
 
 	static int sortFunc(const void *elem1, const void *elem2)
 	{
-		unsigned int a=*(unsigned int *)elem1;
-		unsigned int b=*(unsigned int *)elem2;
+		uint16_t a=*(uint16_t *)elem1;
+		uint16_t b=*(uint16_t *)elem2;
 		C_MessageSearchReply *ra=g_searchcache[0]->searchreplies.Get(a>>16),
 			*rb=g_searchcache[0]->searchreplies.Get(b>>16);
 
@@ -155,7 +155,7 @@ SendMessageSearch (HWND wnd)
 		char *metaptrb=metab;
 		int ida,idb;
 		int timea,timeb;
-		unsigned int la_h,lb_h,la_l,lb_l;
+		uint16_t la_h,lb_h,la_l,lb_l;
 		ra->get_item(a&0xffff,&ida,namea,metaa,(int *)&la_l,(int *)&la_h,&timea);
 		rb->get_item(b&0xffff,&idb,nameb,metab,(int *)&lb_l,(int *)&lb_h,&timeb);
 		int usecol=m_col,usedir=m_dir;
@@ -287,7 +287,7 @@ SendMessageSearch (HWND wnd)
 				};
 				if (val) {
 					char m[SEARCHREPLY_MAX_METASIZE];
-					unsigned int ll=0,lh=0;
+					uint16_t ll=0,lh=0;
 					t->get_item(y,NULL,NULL,m,(int *)&ll,(int *)&lh,NULL);
 					if (g_searchcache[0]->lastsearchtext[0]=='/' &&
 						(!stricmp(m,DIRECTORY_STRING) || !stricmp(m,USER_STRING)))
@@ -329,8 +329,8 @@ SendMessageSearch (HWND wnd)
 				sprintf(buf,"Searching for \'%s\'... %d item(s) found",g_searchcache[0]->lastsearchtext,m_srch_sort_len);
 		};
 		if (m_size_bytes) {
-			unsigned int l = (unsigned int)(m_size_bytes&0xFFFFFFFF);
-			unsigned int h = (unsigned int)(m_size_bytes>>32);
+			uint16_t l = (uint16_t)(m_size_bytes&0xFFFFFFFF);
+			uint16_t h = (uint16_t)(m_size_bytes>>32);
 			strcat(buf," (");
 			FormatSizeStr64(buf+strlen(buf),l,h);
 			strcat(buf,")");
@@ -361,7 +361,7 @@ SendMessageSearch (HWND wnd)
 		m_dir=g_config->ReadInt(CONFIG_search_sortdir,CONFIG_search_sortdir_DEFAULT);
 
 		if (m_col >= 0 && m_col < 5 && m_srch_sort_len)
-			qsort(m_srch_sort,m_srch_sort_len,sizeof(unsigned int),sortFunc);
+			qsort(m_srch_sort,m_srch_sort_len,sizeof(uint16_t),sortFunc);
 
 #if defined(WIN32) && !defined(_DEFINE_WXUI)
 		ListView_RedrawItems(g_lvsearchres.getwnd(),0,m_srch_sort_len-1);
@@ -495,7 +495,7 @@ SendMessageSearch (HWND wnd)
 
 					if (m_srch_sort_len >= m_srch_sort_alloc) {
 						m_srch_sort_alloc=(m_srch_sort_len*3)/2;
-						m_srch_sort=(unsigned int *)realloc(m_srch_sort,m_srch_sort_alloc*sizeof(unsigned int));
+						m_srch_sort=(uint16_t *)realloc(m_srch_sort,m_srch_sort_alloc*sizeof(uint16_t));
 						if (!m_srch_sort) {
 							m_srch_sort_len=0;
 							m_srch_sort_alloc=0;
@@ -797,7 +797,7 @@ SendMessageSearch (HWND wnd)
 			char metadata[SEARCHREPLY_MAX_METASIZE];
 			char *nameptr=name;
 			int id;
-			unsigned int length_low,length_high;
+			uint16_t length_low,length_high;
 			int timev;
 			tr->get_item(repidx,&id,name,metadata,(int*)&length_low,(int*)&length_high,&timev);
 			//MessageBox(hwndDlg,name, APP_NAME " Info stuff",MB_OK|MB_ICONEXCLAMATION);
@@ -946,7 +946,7 @@ SendMessageSearch (HWND wnd)
 		char metadata[SEARCHREPLY_MAX_METASIZE];
 		char *nameptr=name;
 		int id;
-		unsigned int length_low,length_high;
+		uint16_t length_low,length_high;
 		int timev;
 		tr->get_item(repidx,&id,name,metadata,(int*)&length_low,(int*)&length_high,&timev);
 		//MessageBox(hwndDlg,name, APP_NAME " Info stuff",MB_OK|MB_ICONEXCLAMATION);
@@ -1076,7 +1076,7 @@ SendMessageSearch (HWND wnd)
 							char name[SEARCHREPLY_MAX_FILESIZE];
 		char metadata[SEARCHREPLY_MAX_METASIZE];
 		int id;
-		unsigned int length_low,length_high;
+		uint16_t length_low,length_high;
 		int timev;
 		tr->get_item(repidx,&id,name,metadata,(int*)&length_low,(int*)&length_high,&timev);
 		//MessageBox(hwndDlg,name, APP_NAME " Info stuff",MB_OK|MB_ICONEXCLAMATION);
@@ -1102,7 +1102,7 @@ SendMessageSearch (HWND wnd)
 							char metadata[SEARCHREPLY_MAX_METASIZE];
 							char *nameptr=name;
 							int id;
-							unsigned int length_low,length_high;
+							uint16_t length_low,length_high;
 							int timev;
 							tr->get_item(repidx,&id,name,metadata,(int*)&length_low,(int*)&length_high,&timev);
 							//MessageBox(hwndDlg,name, APP_NAME " Info stuff",MB_OK|MB_ICONEXCLAMATION);
@@ -1430,7 +1430,7 @@ int srch_WM_COMMAND_IDC_SEARCH()
 
 		if (m_srch_sort_len >= m_srch_sort_alloc) {
 			m_srch_sort_alloc=(m_srch_sort_len*3)/2;
-			m_srch_sort=(unsigned int *)realloc(m_srch_sort,m_srch_sort_alloc*sizeof(unsigned int));
+			m_srch_sort=(uint16_t *)realloc(m_srch_sort,m_srch_sort_alloc*sizeof(uint16_t));
 			if (!m_srch_sort) {
 				m_srch_sort_len=0;
 				m_srch_sort_alloc=0;

@@ -11,3 +11,6 @@ waste
 wxxml.cpp
 \[config.h\].in
 autom4te.cache
+nbproject/
+autom4te.cache/
+autom4te.cache/

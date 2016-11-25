@@ -48,9 +48,9 @@ extern "C" {
 	/* Random structure.
 	*/
 	struct _R_RANDOM_STRUCT{
-		unsigned int bytesNeeded;
+		uint16_t bytesNeeded;
 		unsigned char state[32];
-		unsigned int outputAvailable;
+		uint16_t outputAvailable;
 		unsigned char output[16];
 	};
 	typedef struct _R_RANDOM_STRUCT R_RANDOM_STRUCT;
@@ -58,14 +58,14 @@ extern "C" {
 	/* RSA public and private key.
 	*/
 	struct _R_RSA_PUBLIC_KEY{
-		unsigned int bits;                           /* length in bits of modulus */
+		uint16_t bits;                           /* length in bits of modulus */
 		unsigned char modulus[MAX_RSA_MODULUS_LEN];                    /* modulus */
 		unsigned char exponent[MAX_RSA_MODULUS_LEN];           /* public exponent */
 	};
 	typedef struct _R_RSA_PUBLIC_KEY R_RSA_PUBLIC_KEY;
 
 	struct _R_RSA_PRIVATE_KEY{
-		unsigned int bits;                           /* length in bits of modulus */
+		uint16_t bits;                           /* length in bits of modulus */
 		unsigned char modulus[MAX_RSA_MODULUS_LEN];                    /* modulus */
 		unsigned char publicExponent[MAX_RSA_MODULUS_LEN];     /* public exponent */
 		unsigned char exponent[MAX_RSA_MODULUS_LEN];          /* private exponent */
@@ -78,7 +78,7 @@ extern "C" {
 	/* RSA prototype key.
 	*/
 	struct _R_RSA_PROTO_KEY{
-		unsigned int bits;                           /* length in bits of modulus */
+		uint16_t bits;                           /* length in bits of modulus */
 		int useFermat4;                        /* public exponent (1 = F4, 0 = 3) */
 	};
 	typedef struct _R_RSA_PROTO_KEY R_RSA_PROTO_KEY;
@@ -86,8 +86,8 @@ extern "C" {
 	/* Random structures.
 	*/
 	int R_RandomInit(R_RANDOM_STRUCT *);
-	int R_RandomUpdate(R_RANDOM_STRUCT *, unsigned char *, unsigned int);
-	int R_GetRandomBytesNeeded(unsigned int *, R_RANDOM_STRUCT *);
+	int R_RandomUpdate(R_RANDOM_STRUCT *, unsigned char *, uint16_t);
+	int R_GetRandomBytesNeeded(uint16_t *, R_RANDOM_STRUCT *);
 	void R_RandomFinal(R_RANDOM_STRUCT *);
 
 	/* Key-pair generation.

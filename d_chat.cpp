@@ -1312,7 +1312,7 @@ bool chat_handle_whois(C_MessageChat &chat)
 
 	BOOL WINAPI Chat_DlgProc(CHAT_HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
-		static unsigned int linkclicktime;
+		static uint16_t linkclicktime;
 		switch (uMsg)
 		{
 		case WM_USER+0x103:

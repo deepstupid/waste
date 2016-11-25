@@ -48,7 +48,7 @@ C_MessageSearchReply::C_MessageSearchReply(C_SHBuf *in)
 	int l=in->GetLength();
 	if (l < 5+16+12) return;
 	int nitems = data[0]; data++;
-	m_conspeed=DataUInt4(data);data+=4;
+	m_conspeed=Datauint32_t(data);data+=4;
 	l-=5;
 	if (!nitems) {
 		log_printf(ds_Warning,"searchreply: invalid message (0 items)!");
@@ -61,10 +61,10 @@ C_MessageSearchReply::C_MessageSearchReply(C_SHBuf *in)
 			log_printf(ds_Warning,"searchreply: invalid message (length error)!");
 			return;
 		};
-		m_replies[x].id=DataUInt4(data); data+=4; l-=4;
-		m_replies[x].length_bytes_low=DataUInt4(data); data+=4; l-=4;
-		m_replies[x].length_bytes_high=DataUInt4(data); data+=4; l-=4;
-		m_replies[x].file_time=DataUInt4(data); data+=4; l-=4;
+		m_replies[x].id=Datauint32_t(data); data+=4; l-=4;
+		m_replies[x].length_bytes_low=Datauint32_t(data); data+=4; l-=4;
+		m_replies[x].length_bytes_high=Datauint32_t(data); data+=4; l-=4;
+		m_replies[x].file_time=Datauint32_t(data); data+=4; l-=4;
 
 		int t;
 		for (t=0; t < waste_min(l,SEARCHREPLY_MAX_FILESIZE) && data[t]; t ++);
@@ -221,7 +221,7 @@ C_MessageSearchRequest::C_MessageSearchRequest(C_SHBuf *in)
 	unsigned char *data=(unsigned char*)in->Get();
 	int l=in->GetLength();
 	if (l < 2) return;
-	m_min_conspeed=DataUInt2(data);data+=2;l-=2;
+	m_min_conspeed=Datauint16_t(data);data+=2;l-=2;
 	int t;
 	for (t=0; t < waste_min(l,256) && data[t]; t ++);
 	if (t == waste_min(l,256)) return;

@@ -40,8 +40,8 @@ C_MessageLocalCaps::C_MessageLocalCaps(C_SHBuf *in)
 	if (m_numcaps > CMLC_MAX_CAPS) m_numcaps=CMLC_MAX_CAPS;
 	int x;
 	for (x = 0; x < m_numcaps; x ++) {
-		m_data[x*2]=DataUInt4(data);  data+=4;
-		m_data[x*2+1]=DataUInt4(data);  data+=4;
+		m_data[x*2]=Datauint32_t(data);  data+=4;
+		m_data[x*2+1]=Datauint32_t(data);  data+=4;
 	};
 }
 

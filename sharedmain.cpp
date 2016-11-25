@@ -143,7 +143,7 @@ int g_conspeed,g_route_traffic;
 int g_log_level;
 int g_log_flush_auto;
 int g_max_simul_dl;
-unsigned int g_max_simul_dl_host;
+uint16_t g_max_simul_dl_host;
 int g_use_accesslist;
 #if defined(_WIN32)&&(!defined(_DEFINE_SRV)) || defined(_DEFINE_WXUI)
 	int g_appendprofiletitles;
@@ -161,7 +161,7 @@ int g_keydist_flags;
 // 1=force
 // 2=dynamic resolve
 int g_forceip_dynip_mode;
-unsigned long g_forceip_dynip_addr;
+uint32_t g_forceip_dynip_addr;
 char g_forceip_name[256];
 
 FILE* _logfile=0;
@@ -552,9 +552,9 @@ void main_MsgCallback(T_Message *message, C_MessageQueueList *_this, C_Connectio
 					{
 						if ((g_forceip_dynip_mode==2) && cn && (cn->get_remote_port())) {
 							if (!cn->get_has_sent_remoteip()) {
-								unsigned long rip;
+								uint32_t rip;
 								cn->set_has_sent_remoteip();
-								rip=(unsigned long)v;
+								rip=(uint32_t)v;
 								if ((rip!=0)&&(rip!=INADDR_NONE)&&(!IPv4IsLoopback(rip))&&(!IPv4IsPrivateNet(rip))) {
 									if (g_forceip_dynip_addr!=rip) {
 										char ad2[64];
@@ -621,7 +621,7 @@ void main_MsgCallback(T_Message *message, C_MessageQueueList *_this, C_Connectio
 			C_MessagePing rep(message->data);
 
 			#if (defined(_WIN32)&&(!defined(_DEFINE_SRV))) || defined(_DEFINE_WXUI)
-				unsigned int a=(unsigned int)(cn->get_interface());// Intellisense bug here
+				uint16_t a=(uint16_t)(cn->get_interface());// Intellisense bug here
 				if (rep.m_port && rep.m_ip && (a != rep.m_ip)) {
 					add_to_netq(rep.m_ip,rep.m_port,90,0);
 				};
@@ -804,7 +804,7 @@ void main_MsgCallback(T_Message *message, C_MessageQueueList *_this, C_Connectio
 									g_lvsend.InsertItem(0,a->GetName(),0);
 									char buf[32];
 									int fs_l,fs_h;
-									a->GetSize((unsigned int *)&fs_l,(unsigned int *)&fs_h);
+									a->GetSize((uint16_t *)&fs_l,(uint16_t *)&fs_h);
 									FormatSizeStr64(buf,fs_l,fs_h);
 									g_lvsend.SetItemText(0,1,r->get_nick());
 									g_lvsend.SetItemText(0,2,buf);
@@ -820,7 +820,7 @@ void main_MsgCallback(T_Message *message, C_MessageQueueList *_this, C_Connectio
 								g_lvsend.InsertItem(0,a->GetName(),(size_t)a);
 								char buf[32];
 								int fs_l,fs_h;
-								a->GetSize((unsigned int *)&fs_l,(unsigned int *)&fs_h);
+								a->GetSize((uint16_t *)&fs_l,(uint16_t *)&fs_h);
 								FormatSizeStr64(buf,fs_l,fs_h);
 								g_lvsend.SetItemText(0,1,r->get_nick());
 								g_lvsend.SetItemText(0,2,buf);
@@ -964,7 +964,7 @@ void main_onGotChannel(const char *cnl)
 				};
 			};
 
-			if (time(NULL) - (unsigned int)i.lParam >  CHANNEL_STARVE_DELAY) {
+			if (time(NULL) - (uint16_t)i.lParam >  CHANNEL_STARVE_DELAY) {
 				h=TreeView_GetNextSibling(htree,h);
 				chatroom_item *p=L_Chatroom;
 				while(p!=NULL) {

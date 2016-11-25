@@ -32,7 +32,7 @@ void NetKern_Run();
 void AddConnection(char *str, unsigned short port, int rating);
 void DoPing(C_MessageQueue *mq);
 void RebroadcastCaps(C_MessageQueueList *mql);
-void NetKern_ConnectToHostIfOK(unsigned long ip, unsigned short port);
+void NetKern_ConnectToHostIfOK(uint32_t ip, unsigned short port);
 
 #if defined(_WIN32)&&(!defined(_DEFINE_SRV))
 BOOL WINAPI Net_DlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);

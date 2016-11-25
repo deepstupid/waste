@@ -16,30 +16,30 @@ this version is much modified
 #include "rsa.hpp"
 #include "nn.hpp"
 
-static int RSAPublicBlock(unsigned char *, unsigned int *, unsigned char *, unsigned int, R_RSA_PUBLIC_KEY *);
-static int RSAPrivateBlock(unsigned char *, unsigned int *, unsigned char *, unsigned int, R_RSA_PRIVATE_KEY *, R_RANDOM_STRUCT * = NULL);
+static int RSAPublicBlock(unsigned char *, uint16_t *, unsigned char *, uint16_t, R_RSA_PUBLIC_KEY *);
+static int RSAPrivateBlock(unsigned char *, uint16_t *, unsigned char *, uint16_t, R_RSA_PRIVATE_KEY *, R_RANDOM_STRUCT * = NULL);
 
 /* RSA public-key encryption, according to PKCS #1.
 Params:
 	unsigned char *output;			output block
-	unsigned int *outputLen;		length of output block
+	uint16_t *outputLen;		length of output block
 	unsigned char *input;			input block
-	unsigned int inputLen;			length of input block
+	uint16_t inputLen;			length of input block
 	R_RSA_PUBLIC_KEY *publicKey;	RSA public key
 	R_RANDOM_STRUCT *randomStruct;	random structure
 */
 int RSAPublicEncrypt(
 					 unsigned char *output,
-					 unsigned int *outputLen,
+					 uint16_t *outputLen,
 					 unsigned char *input,
-					 unsigned int inputLen,
+					 uint16_t inputLen,
 					 R_RSA_PUBLIC_KEY *publicKey,
 					 R_RANDOM_STRUCT *randomStruct
 					 )
 {
 	int status;
 	unsigned char byte, pkcsBlock[MAX_RSA_MODULUS_LEN];
-	unsigned int i, modulusLen;
+	uint16_t i, modulusLen;
 
 	modulusLen = (publicKey->bits + 7) / 8;
 	if (inputLen + 11 > modulusLen) return (RE_LEN);
@@ -72,22 +72,22 @@ int RSAPublicEncrypt(
 /* RSA public-key decryption, according to PKCS #1.
 Params:
 	unsigned char *output;			output block
-	unsigned int *outputLen;		length of output block
+	uint16_t *outputLen;		length of output block
 	unsigned char *input;			input block
-	unsigned int inputLen;			length of input block
+	uint16_t inputLen;			length of input block
 	R_RSA_PUBLIC_KEY *publicKey;	RSA public key
 */
 int RSAPublicDecrypt(
 					 unsigned char *output,
-					 unsigned int *outputLen,
+					 uint16_t *outputLen,
 					 unsigned char *input,
-					 unsigned int inputLen,
+					 uint16_t inputLen,
 					 R_RSA_PUBLIC_KEY *publicKey
 					 )
 {
 	int status;
 	unsigned char pkcsBlock[MAX_RSA_MODULUS_LEN];
-	unsigned int i, modulusLen, pkcsBlockLen;
+	uint16_t i, modulusLen, pkcsBlockLen;
 
 	modulusLen = (publicKey->bits + 7) / 8;
 	if (inputLen > modulusLen) return (RE_LEN);
@@ -122,22 +122,22 @@ int RSAPublicDecrypt(
 
 /* RSA private-key encryption, according to PKCS #1.
 	unsigned char *output;			output block
-	unsigned int *outputLen;		length of output block
+	uint16_t *outputLen;		length of output block
 	unsigned char *input;			input block
-	unsigned int inputLen;			length of input	block
+	uint16_t inputLen;			length of input	block
 	R_RSA_PRIVATE_KEY *privateKey;	RSA private key
 */
 int RSAPrivateEncrypt(
 					  unsigned char *output,
-					  unsigned int *outputLen,
+					  uint16_t *outputLen,
 					  unsigned char *input,
-					  unsigned int inputLen,
+					  uint16_t inputLen,
 					  R_RSA_PRIVATE_KEY *privateKey
 					  )
 {
 	int status;
 	unsigned char pkcsBlock[MAX_RSA_MODULUS_LEN];
-	unsigned int i, modulusLen;
+	uint16_t i, modulusLen;
 
 	modulusLen = (privateKey->bits + 7) / 8;
 	if (inputLen + 11 > modulusLen) return (RE_LEN);
@@ -163,23 +163,23 @@ int RSAPrivateEncrypt(
 
 /* RSA private-key decryption, according to PKCS #1.
 	unsigned char *output;			output block
-	unsigned int *outputLen;		length of output block
+	uint16_t *outputLen;		length of output block
 	unsigned char *input;			input block
-	unsigned int inputLen;			length of input	block
+	uint16_t inputLen;			length of input	block
 	R_RSA_PRIVATE_KEY *privateKey;	RSA private key
 */
 int RSAPrivateDecrypt(
 					  unsigned char *output,
-					  unsigned int *outputLen,
+					  uint16_t *outputLen,
 					  unsigned char *input,
-					  unsigned int inputLen,
+					  uint16_t inputLen,
 					  R_RSA_PRIVATE_KEY *privateKey,
 					  R_RANDOM_STRUCT *rand
 					  )
 {
 	int status;
 	unsigned char pkcsBlock[MAX_RSA_MODULUS_LEN];
-	unsigned int i, modulusLen, pkcsBlockLen;
+	uint16_t i, modulusLen, pkcsBlockLen;
 
 	modulusLen = (privateKey->bits + 7) / 8;
 	if (inputLen > modulusLen) return (RE_LEN);
@@ -217,22 +217,22 @@ Assumes inputLen < length of modulus.
 Requires input < modulus.
 Params:
 	unsigned char *output;			output block
-	unsigned int *outputLen;		length of output block
+	uint16_t *outputLen;		length of output block
 	unsigned char *input;			input block
-	unsigned int inputLen;			length of input block
+	uint16_t inputLen;			length of input block
 	R_RSA_PUBLIC_KEY *publicKey;	RSA	public key
 */
 static int RSAPublicBlock(
 						  unsigned char *output,
-						  unsigned int *outputLen,
+						  uint16_t *outputLen,
 						  unsigned char *input,
-						  unsigned int inputLen,
+						  uint16_t inputLen,
 						  R_RSA_PUBLIC_KEY *publicKey
 						  )
 {
 	NN_DIGIT c[MAX_NN_DIGITS], e[MAX_NN_DIGITS], m[MAX_NN_DIGITS],
 		n[MAX_NN_DIGITS];
-	unsigned int eDigits, nDigits;
+	uint16_t eDigits, nDigits;
 
 	NN_Decode(m, MAX_NN_DIGITS, input, inputLen);
 	NN_Decode(n, MAX_NN_DIGITS, publicKey->modulus, MAX_RSA_MODULUS_LEN);
@@ -262,16 +262,16 @@ Assumes inputLen < length of modulus.
 Requires input < modulus.
 Params:
 	unsigned char *output;			output block
-	unsigned int *outputLen;		length of output block
+	uint16_t *outputLen;		length of output block
 	unsigned char *input;			input block
-	unsigned int inputLen;			length of input block
+	uint16_t inputLen;			length of input block
 	R_RSA_PRIVATE_KEY *privateKey;	RSA private key
 */
 static int RSAPrivateBlock(
 						   unsigned char *output,
-						   unsigned int *outputLen,
+						   uint16_t *outputLen,
 						   unsigned char *input,
-						   unsigned int inputLen,
+						   uint16_t inputLen,
 						   R_RSA_PRIVATE_KEY *privateKey,
 						   R_RANDOM_STRUCT *rand
 						   )
@@ -280,7 +280,7 @@ static int RSAPrivateBlock(
 		dP[MAX_NN_DIGITS], dQ[MAX_NN_DIGITS], mP[MAX_NN_DIGITS],
 		mQ[MAX_NN_DIGITS], n[MAX_NN_DIGITS], p[MAX_NN_DIGITS], q[MAX_NN_DIGITS],
 		qInv[MAX_NN_DIGITS], t[MAX_NN_DIGITS];
-	unsigned int cDigits, nDigits, pDigits;
+	uint16_t cDigits, nDigits, pDigits;
 
 	NN_Decode(c,    MAX_NN_DIGITS, input, inputLen);
 	NN_Decode(n,    MAX_NN_DIGITS, privateKey->modulus, MAX_RSA_MODULUS_LEN);

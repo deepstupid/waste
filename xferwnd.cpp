@@ -180,7 +180,7 @@ void xferwnd_find_wxwidgets(WxXfers *dlg, WxUploads *uploaddlg) {
             } else if (fullfn.FileExists() && fullpath.Find(wDotWastestate) >= 0) {
 
                 int sig1, sig2;
-                unsigned long fullsize_l=0,fullsize_h=0;
+                uint32_t fullsize_l=0,fullsize_h=0;
 
                 wxFFile hStatFile(fullpath, _T("rb"));
                 if (!hStatFile.IsOpened()) {
@@ -502,7 +502,7 @@ static void RunSends()
 {
 	int x,needrefresh=0;
 
-	static unsigned int g_uploadqueue_lastsend;
+	static uint16_t g_uploadqueue_lastsend;
 
 	int a=GetTickCount()-g_uploadqueue_lastsend;
 	if (g_uploadqueue.GetSize() && (!g_uploadqueue_lastsend || a>=NEXTITEM_UPLOAD_DELAY))
@@ -558,7 +558,7 @@ static void RunRecvs()
 	int needrefresh=0;
 
 	#if defined(_WIN32)&&(!defined(_DEFINE_SRV)) || defined(_DEFINE_WXUI)
-	static unsigned int next_runitem;
+	static uint16_t next_runitem;
 		int a=GetTickCount()-next_runitem;
 		if (!next_runitem || a>=0) {
 			if (g_mql->GetNumQueues()) if (g_recvs.GetSize() < g_max_simul_dl) {
@@ -580,7 +580,7 @@ static void RunRecvs()
 
 					//see if item is already beind downloaded, and if not, how many items from that host are
 					int n=g_lvrecv.GetCount();
-					unsigned int nhostitems=0;
+					uint16_t nhostitems=0;
 					int x;
 
 					if (!(g_max_simul_dl_host&0x80000000) && g_max_simul_dl_host) {
@@ -682,7 +682,7 @@ int Xfer_WillQ(char *file, char *guidstr)
 {
 
 	#if defined(_WIN32)&&(!defined(_DEFINE_SRV)) || defined(_DEFINE_WXUI)
-		unsigned int nhostitems=0;
+		uint16_t nhostitems=0;
 		//see if item is already beind downloaded, and if not, how many items from that host are
 		int n=g_lvrecv.GetCount();
 		int x;

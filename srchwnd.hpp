@@ -37,9 +37,9 @@ class SearchCacheItem
 		C_ItemList<C_MessageSearchReply> searchreplies;
 		char lastsearchtext[512];
 		T_GUID search_id;
-		unsigned int search_id_time;
+		uint16_t search_id_time;
 		int numcons;
-		unsigned int lastvisitem;
+		uint16_t lastvisitem;
 };
 
 void KillDirgetlist();

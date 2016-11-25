@@ -44,8 +44,8 @@ C_MessagePing::C_MessagePing(C_SHBuf *in)
 	int l=in->GetLength();
 	if (l < 2+4) return;
 
-	m_port=DataUInt2(data);data+=2;
-	m_ip=DataUInt4(data);data+=4;
+	m_port=Datauint16_t(data);data+=2;
+	m_ip=Datauint32_t(data);data+=4;
 	l-=4+2;
 	if (l>0) {
 		if (l > (int) sizeof(m_nick)-1) {

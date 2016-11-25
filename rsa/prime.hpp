@@ -5,4 +5,4 @@
 Inc., created 1991. All rights reserved.
 */
 
-int GeneratePrime(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, unsigned int, R_RANDOM_STRUCT *);
+int GeneratePrime(NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, NN_DIGIT *, uint16_t, R_RANDOM_STRUCT *);

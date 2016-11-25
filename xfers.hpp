@@ -57,7 +57,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 		char *GetError() { return m_err; }
 
 		char *GetName() { return m_fn; }
-		void GetSize(unsigned int *low, unsigned int *high) { *low=m_filelen_bytes_l; *high=m_filelen_bytes_h; }
+		void GetSize(uint16_t *low, uint16_t *high) { *low=m_filelen_bytes_l; *high=m_filelen_bytes_h; }
 
 		int GetIdx() { return m_idx; }
 
@@ -65,11 +65,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 		void updateStatusText();
 
 		time_t m_last_talktime;
-		unsigned int m_lastsendtime;
+		uint16_t m_lastsendtime;
 		char *m_err;
 		char m_err_buf[256];
 		char m_fn[512];
-		unsigned int m_create_date, m_mod_date;
+		uint16_t m_create_date, m_mod_date;
 		T_GUID m_guid;
 		#ifdef XFER_WIN32_FILEIO
 			HANDLE m_hfile;
@@ -78,15 +78,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 		#endif
 		int m_idx;
 		int m_need_reply;
-		unsigned int m_filelen_bytes_l, m_filelen_bytes_h;
-		unsigned int m_filelen_chunks;
-		unsigned int m_lastpos_l, m_lastpos_h;
+		uint16_t m_filelen_bytes_l, m_filelen_bytes_h;
+		uint16_t m_filelen_chunks;
+		uint16_t m_lastpos_l, m_lastpos_h;
 
-		unsigned int chunks_to_send[FILE_MAX_CHUNKS_PER_REQ];
-		unsigned int chunks_to_send_pos,chunks_to_send_len;
+		uint16_t chunks_to_send[FILE_MAX_CHUNKS_PER_REQ];
+		uint16_t chunks_to_send_pos,chunks_to_send_len;
 
-		unsigned int m_starttime, m_lastchunkcnt;
-		unsigned int m_chunks_sent_total,m_max_chunksent;
+		uint16_t m_starttime, m_lastchunkcnt;
+		uint16_t m_chunks_sent_total,m_max_chunksent;
 		int m_last_cps;
 
 		C_FileSendReply m_reply;
@@ -128,23 +128,23 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 			FILE *m_outfile;
 			FILE *m_statfile;
 		#endif
-		unsigned int m_cps_blks[CPS_WINDOWSIZE];
-		unsigned int m_next_cpstime;
+		uint16_t m_cps_blks[CPS_WINDOWSIZE];
+		uint16_t m_next_cpstime;
 		int m_cps_blks_pos;
 		int m_last_cps;
 
 		int m_path_len;
 
-		unsigned int m_outfile_lastpos_l,m_outfile_lastpos_h;
+		uint16_t m_outfile_lastpos_l,m_outfile_lastpos_h;
 		unsigned char *m_validbf;
 		unsigned char m_hash[SHA_OUTSIZE];
 		char m_nick[32];
 		C_FileSendRequest request;
-		unsigned int m_chunk_cnt, m_chunk_total,m_chunk_startcnt;
-		unsigned int m_first_chunkilack;
-		unsigned int m_create_date, m_mod_date;
-		unsigned int m_bytes_total_l,m_bytes_total_h;
-		unsigned int m_total_chunks_recvd;
+		uint16_t m_chunk_cnt, m_chunk_total,m_chunk_startcnt;
+		uint16_t m_first_chunkilack;
+		uint16_t m_create_date, m_mod_date;
+		uint16_t m_bytes_total_l,m_bytes_total_h;
+		uint16_t m_total_chunks_recvd;
 		int m_done;
 		int m_hasgotchunks;
 		time_t m_next_stateflush_time;

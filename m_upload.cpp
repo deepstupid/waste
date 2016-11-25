@@ -56,14 +56,14 @@ C_UploadRequest::C_UploadRequest(C_SHBuf *in)
 		return;
 	};
 	memcpy(&m_guid,data,16);			data+=16;datalen-=16;
-	m_size_low=DataUInt4(data);			data+= 4;datalen-= 4;
-	m_size_high=DataUInt4(data);		data+= 4;datalen-= 4;
+	m_size_low=Datauint32_t(data);			data+= 4;datalen-= 4;
+	m_size_high=Datauint32_t(data);		data+= 4;datalen-= 4;
 
 	memcpy(m_dest,data,sizeof(m_dest)-1);
 	m_dest[sizeof(m_dest)-1]=0;
 	data+=sizeof(m_dest)-1;datalen-=sizeof(m_dest)-1;
 
-	m_idx=DataUInt4(data);				data+= 4;datalen-= 4;
+	m_idx=Datauint32_t(data);				data+= 4;datalen-= 4;
 
 	memcpy(m_nick,data,sizeof(m_nick)-1);
 	m_nick[sizeof(m_nick)-1]=0;

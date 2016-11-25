@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define IS_VALID(x) (m_validbf[(x)>>3]&(1<<(x&7)))
 #define SET_VALID(x) m_validbf[(x)>>3]|=(1<<(x&7))
 
-static void* malloc_memset(unsigned int len,char c)
+static void* malloc_memset(uint16_t len,char c)
 {
 	void* b=malloc(len);
 	if (b) memset(b,c,len);
@@ -125,7 +125,7 @@ XferSend::XferSend(C_MessageQueueList *mql,T_GUID *guid, C_FileSendRequest *req,
 				#endif
 
 				if (g_config->ReadInt(CONFIG_shafiles,CONFIG_shafiles_DEFAULT) &&
-					(!m_filelen_bytes_h && m_filelen_bytes_l < (unsigned int)g_config->ReadInt(CONFIG_maxsizesha,CONFIG_maxsizesha_DEFAULT)*1024*1024) &&
+					(!m_filelen_bytes_h && m_filelen_bytes_l < (uint16_t)g_config->ReadInt(CONFIG_maxsizesha,CONFIG_maxsizesha_DEFAULT)*1024*1024) &&
 					req->get_bIsInitialRequest())
 				{
 					context.reset();
@@ -158,7 +158,7 @@ XferSend::XferSend(C_MessageQueueList *mql,T_GUID *guid, C_FileSendRequest *req,
 				};
 
 				if (g_config->ReadInt(CONFIG_directxfers,CONFIG_directxfers_DEFAULT)) {
-					unsigned long ip;
+					uint32_t ip;
 					unsigned short prt=0;
 					req->get_dc_ipport(&ip,&prt);
 					if (ip && prt) {
@@ -271,13 +271,13 @@ void XferSend::run(C_MessageQueueList *mql)
 		if (a >= -1 && mql->GetQueue(a)->getlen() < mql->GetQueue(a)->getmaxlen()/4) {
 			m_lastsendtime=GetTickCount();
 
-			unsigned int x=chunks_to_send[chunks_to_send_pos++];
+			uint16_t x=chunks_to_send[chunks_to_send_pos++];
 			if (x >= 0 && x < m_filelen_chunks) {
-				unsigned int newpos_l=x*FILE_CHUNKSIZE;
+				uint16_t newpos_l=x*FILE_CHUNKSIZE;
 				#if defined(_WIN32)&&(!defined(_DEFINE_SRV)) || defined(_DEFINE_WXUI)
-					unsigned int newpos_h=(unsigned int) (((__int64)x*(__int64)FILE_CHUNKSIZE)>>32);
+					uint16_t newpos_h=(uint16_t) (((__int64)x*(__int64)FILE_CHUNKSIZE)>>32);
 				#else
-					unsigned int newpos_h=0;
+					uint16_t newpos_h=0;
 				#endif
 				if (newpos_l != m_lastpos_l || newpos_h != m_lastpos_h) {
 					#ifdef XFER_WIN32_FILEIO
@@ -297,7 +297,7 @@ void XferSend::run(C_MessageQueueList *mql)
 				#else
 					int l=fread(buf,1,FILE_CHUNKSIZE,m_file);
 				#endif
-				unsigned int o = m_lastpos_l;
+				uint16_t o = m_lastpos_l;
 				m_lastpos_l+=l;
 				if (m_lastpos_l < o) m_lastpos_h++;
 				C_FileSendReply datareply;
@@ -366,14 +366,14 @@ void XferSend::onGotMsg(C_FileSendRequest *req)
 	m_reply.set_file_len(m_filelen_bytes_l,m_filelen_bytes_h);
 	m_reply.set_file_dates(m_create_date,m_mod_date);
 	m_reply.set_index((unsigned)-1);
-	unsigned int x;
+	uint16_t x;
 
 	chunks_to_send_pos=0;
 	chunks_to_send_len=req->get_chunks_needed();
 	if (chunks_to_send_len) {
 		if (chunks_to_send_len > FILE_MAX_CHUNKS_PER_REQ) chunks_to_send_len=FILE_MAX_CHUNKS_PER_REQ;
 		for (x = 0; x < chunks_to_send_len; x ++) {
-			unsigned int nc=req->get_need_chunk(x);
+			uint16_t nc=req->get_need_chunk(x);
 			if (nc < m_filelen_chunks) chunks_to_send[x]=nc;
 			else {
 				chunks_to_send_len--; //sending less chunks
@@ -387,7 +387,7 @@ void XferSend::onGotMsg(C_FileSendRequest *req)
 		chunks_to_send_len=1;
 	};
 	m_reply.set_chunkcount(chunks_to_send_len);
-	unsigned int tm=GetTickCount()-m_starttime;
+	uint16_t tm=GetTickCount()-m_starttime;
 
 	#ifdef _WIN32
 		if (tm) m_last_cps=MulDiv(m_chunks_sent_total-m_lastchunkcnt,1000*FILE_CHUNKSIZE,tm);
@@ -516,7 +516,7 @@ XferRecv::XferRecv(C_MessageQueueList *mql, const char *guididx, const char *siz
 		g_config->ReadInt(CONFIG_directxfers,CONFIG_directxfers_DEFAULT)
 		)
 	{
-		unsigned long ip=INADDR_NONE;
+		uint32_t ip=INADDR_NONE;
 		unsigned short prt=0;
 		if (g_forceip_dynip_mode==0) {
 			ip=g_mql->GetQueue(0)->get_con()->get_interface();
@@ -693,7 +693,7 @@ XferRecv::XferRecv(C_MessageQueueList *mql, const char *guididx, const char *siz
 			return;
 		};
 
-	unsigned int x;
+	uint16_t x;
 
 	m_create_date=m_mod_date=0;
 	m_bytes_total_l=0xFFFFFFFF;
@@ -737,9 +737,9 @@ XferRecv::XferRecv(C_MessageQueueList *mql, const char *guididx, const char *siz
 						m_validbf=(unsigned char *)malloc_memset((m_chunk_total+7)/8,0);
 						#ifdef XFER_WIN32_FILEIO
 							if (m_validbf &&
-								ReadFile(m_hstatfile,m_validbf,(m_chunk_total+7)/8,&d,NULL) && d==(unsigned int)((m_chunk_total+7)/8))
+								ReadFile(m_hstatfile,m_validbf,(m_chunk_total+7)/8,&d,NULL) && d==(uint16_t)((m_chunk_total+7)/8))
 						#else
-							if (m_validbf && fread(m_validbf,1,(m_chunk_total+7)/8,m_statfile)==(unsigned int)((m_chunk_total+7)/8))
+							if (m_validbf && fread(m_validbf,1,(m_chunk_total+7)/8,m_statfile)==(uint16_t)((m_chunk_total+7)/8))
 						#endif
 							{
 								for (x = 0; x < m_chunk_total; x ++) {
@@ -802,7 +802,7 @@ XferRecv::XferRecv(C_MessageQueueList *mql, const char *guididx, const char *siz
 
 XferRecv::~XferRecv()
 {
-	unsigned int filesize_l=1,filesize_h=0; //assume good file, don't delete if unknown!
+	uint16_t filesize_l=1,filesize_h=0; //assume good file, don't delete if unknown!
 	#ifdef XFER_WIN32_FILEIO
 		if (m_houtfile!=INVALID_HANDLE_VALUE) {
 			if (m_done) {
@@ -844,7 +844,7 @@ XferRecv::~XferRecv()
 	#else
 		if (m_outfile) {
 			fseek(m_outfile,0,SEEK_END);
-			filesize_l=(unsigned int)ftell(m_outfile);
+			filesize_l=(uint16_t)ftell(m_outfile);
 			filesize_h=0;
 			//fucko for bsd, write date(s)
 			fclose(m_outfile);
@@ -942,7 +942,7 @@ char *XferRecv::getOutputFileCopy()
 			FILE_ATTRIBUTE_NORMAL, NULL);
 		if (h == INVALID_HANDLE_VALUE) return NULL;
 		int x=0;
-		unsigned int old_l, old_h=0;
+		uint16_t old_l, old_h=0;
 		old_l=SetFilePointer(m_houtfile,0,(LONG *)&old_h,FILE_CURRENT);
 		SetFilePointer(m_houtfile,0,NULL,FILE_BEGIN);
 		for (;;) {
@@ -1018,7 +1018,7 @@ int XferRecv::run(C_MessageQueueList *mql)
 	#endif
 
 	if (chunks_coming<=0 || time(NULL)-last_msg_time > RECEIVE_TIMEOUT_DELAY) {
-		unsigned int x;
+		uint16_t x;
 		//send a new request
 		if (chunks_coming <= 0) {
 			m_adaptive_chunksize += m_adaptive_chunksize/4;
@@ -1086,15 +1086,15 @@ void XferRecv::onGotMsg(C_FileSendReply *reply)
 		delete reply;
 		return;
 	};
-	unsigned int idx=reply->get_index();
+	uint16_t idx=reply->get_index();
 	last_msg_time=time(NULL);
 	m_hasgotchunks=1;
-	if (idx==(unsigned int)~0) { //woohoo header
+	if (idx==(uint16_t)~0) { //woohoo header
 		delete lasthdr;
 		lasthdr=reply;
 
 		if (g_config->ReadInt(CONFIG_directxfers,CONFIG_directxfers_DEFAULT)) {
-			unsigned long ip=0;
+			uint32_t ip=0;
 			unsigned short prt=0;
 			lasthdr->get_dc_ipport(&ip,&prt);
 			if (ip && prt) {
@@ -1102,7 +1102,7 @@ void XferRecv::onGotMsg(C_FileSendReply *reply)
 			};
 		};
 		chunks_coming=lasthdr->get_chunkcount();
-		unsigned int fs_h,fs_l;
+		uint16_t fs_h,fs_l;
 		lasthdr->get_file_len(&fs_l,&fs_h);
 		lasthdr->get_file_dates(&m_create_date,&m_mod_date);
 		m_chunk_total=(fs_l+FILE_CHUNKSIZE-1)/FILE_CHUNKSIZE + (fs_h * ((1<<30)/FILE_CHUNKSIZE) * 4);
@@ -1162,11 +1162,11 @@ void XferRecv::onGotMsg(C_FileSendReply *reply)
 			return;
 		};
 
-		unsigned int newpos_l=FILE_CHUNKSIZE*idx;
+		uint16_t newpos_l=FILE_CHUNKSIZE*idx;
 		#ifdef _WIN32
-			unsigned int newpos_h=(unsigned int) (((__int64)FILE_CHUNKSIZE*(__int64)idx)>>32);
+			uint16_t newpos_h=(uint16_t) (((__int64)FILE_CHUNKSIZE*(__int64)idx)>>32);
 		#else
-			unsigned int newpos_h=0;//fucko bsd 64 bit fn
+			uint16_t newpos_h=0;//fucko bsd 64 bit fn
 		#endif
 
 		if (m_outfile_lastpos_l != newpos_l || m_outfile_lastpos_h != newpos_h) {
@@ -1218,7 +1218,7 @@ void XferRecv::onGotMsg(C_FileSendReply *reply)
 			#ifndef XFER_WIN32_FILEIO
 				fflush(m_outfile);
 			#endif
-			unsigned int o=m_outfile_lastpos_l;
+			uint16_t o=m_outfile_lastpos_l;
 			m_outfile_lastpos_l+=n;
 			if (m_outfile_lastpos_l < o) m_outfile_lastpos_h++;
 
@@ -1239,7 +1239,7 @@ void XferRecv::onGotMsg(C_FileSendReply *reply)
 				m_cps_blks[m_cps_blks_pos]=(m_chunk_cnt-m_chunk_startcnt);
 				m_cps_blks_pos++;
 				m_cps_blks_pos%=CPS_WINDOWSIZE;
-				unsigned int tm=CPS_WINDOWSIZE*CPS_WINDOWLEN;
+				uint16_t tm=CPS_WINDOWSIZE*CPS_WINDOWLEN;
 				#ifdef _WIN32
 					m_last_cps=MulDiv(m_chunk_cnt-m_chunk_startcnt - m_cps_blks[m_cps_blks_pos],1000*FILE_CHUNKSIZE,tm);
 				#else
@@ -1250,13 +1250,13 @@ void XferRecv::onGotMsg(C_FileSendReply *reply)
 
 			if (m_chunk_cnt >= m_chunk_total) {
 				m_chunk_cnt=0;
-				unsigned int x;
+				uint16_t x;
 				for (x = 0; x < m_chunk_total; x ++) if (IS_VALID(x)) m_chunk_cnt++;
 				if (m_chunk_cnt >= m_chunk_total) { //done!
 					if (lasthdr) {
 						unsigned char zerohash[SHA_OUTSIZE]={0,};
 						unsigned char hash[SHA_OUTSIZE],hash2[SHA_OUTSIZE];
-						unsigned int l_h,l_l;
+						uint16_t l_h,l_l;
 						lasthdr->get_file_len(&l_l,&l_h);
 						lasthdr->get_hash(hash);
 						if (memcmp(zerohash,hash,SHA_OUTSIZE) && !l_h) {
@@ -1266,11 +1266,11 @@ void XferRecv::onGotMsg(C_FileSendReply *reply)
 								fseek(m_outfile,0,SEEK_SET);
 							#endif
 							SHAify context;
-							unsigned int l=l_l;
+							uint16_t l=l_l;
 
 							while (l>0) {
 								unsigned char buf[8192];
-								unsigned int a=sizeof(buf);
+								uint16_t a=sizeof(buf);
 								if (a > l) a=l;
 								#ifdef XFER_WIN32_FILEIO
 									DWORD d;

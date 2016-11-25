@@ -60,10 +60,10 @@ extern int g_conspeed,g_route_traffic;
 extern int g_log_level;
 extern int g_log_flush_auto;
 extern int g_max_simul_dl;
-extern unsigned int g_max_simul_dl_host;
+extern uint16_t g_max_simul_dl_host;
 
 extern int g_forceip_dynip_mode;
-extern unsigned long g_forceip_dynip_addr;
+extern uint32_t g_forceip_dynip_addr;
 extern char g_forceip_name[256];
 
 extern char g_performs[4096];

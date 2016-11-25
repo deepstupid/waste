@@ -13,8 +13,8 @@ Inc., created 1991. All rights reserved.
 #include "nn.hpp"
 #include "prime.hpp"
 
-static int RSAFilter(NN_DIGIT *, unsigned int, NN_DIGIT *, unsigned int);
-static int RelativelyPrime(NN_DIGIT *, unsigned int, NN_DIGIT *, unsigned int);
+static int RSAFilter(NN_DIGIT *, uint16_t, NN_DIGIT *, uint16_t);
+static int RelativelyPrime(NN_DIGIT *, uint16_t, NN_DIGIT *, uint16_t);
 
 /*Generates an RSA key pair with a given length and public exponent.
 Params:
@@ -36,7 +36,7 @@ int R_GeneratePEMKeys(
 		qMinus1[MAX_NN_DIGITS], t[MAX_NN_DIGITS], u[MAX_NN_DIGITS],
 		v[MAX_NN_DIGITS];
 	int status;
-	unsigned int nDigits, pBits, pDigits, qBits;
+	uint16_t nDigits, pBits, pDigits, qBits;
 
 	if ((protoKey->bits < MIN_RSA_MODULUS_BITS) ||
 		(protoKey->bits > MAX_RSA_MODULUS_BITS))
@@ -138,7 +138,7 @@ int R_GeneratePEMKeys(
 Lengths: a[aDigits], b[bDigits].
 Assumes aDigits < MAX_NN_DIGITS, bDigits < MAX_NN_DIGITS.
 */
-static int RSAFilter(NN_DIGIT *a, unsigned int aDigits, NN_DIGIT *b, unsigned int bDigits)
+static int RSAFilter(NN_DIGIT *a, uint16_t aDigits, NN_DIGIT *b, uint16_t bDigits)
 {
 	int status;
 	NN_DIGIT aMinus1[MAX_NN_DIGITS], t[MAX_NN_DIGITS];
@@ -158,7 +158,7 @@ static int RSAFilter(NN_DIGIT *a, unsigned int aDigits, NN_DIGIT *b, unsigned in
 Lengths: a[aDigits], b[bDigits].
 Assumes aDigits >= bDigits, aDigits < MAX_NN_DIGITS.
 */
-static int RelativelyPrime(NN_DIGIT *a, unsigned int aDigits, NN_DIGIT *b, unsigned int bDigits)
+static int RelativelyPrime(NN_DIGIT *a, uint16_t aDigits, NN_DIGIT *b, uint16_t bDigits)
 {
 	int status;
 	NN_DIGIT t[MAX_NN_DIGITS], u[MAX_NN_DIGITS];

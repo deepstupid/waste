@@ -68,7 +68,7 @@ inline LPTSTR safe_strncpy(char* lpDest, const char* lpSrc,int iMaxBufLength)
 	#define malloc(x) _malloc_dbg( x, _NORMAL_BLOCK, __FILE__, __LINE__)
 	#define new DEBUG_NEW
 	#define strdup(x) dbgstrdup(x, __FILE__, __LINE__)
-	char* dbgstrdup(const char*str,const char *file, unsigned int line);
+	char* dbgstrdup(const char*str,const char *file, uint16_t line);
 #else
 	#define DEBUG_NEW new
 #endif // _DEBUG
